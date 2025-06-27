@@ -3,7 +3,7 @@ from typing import Dict, List, Any
 
 class Tool(ABC):
     """工具基类，所有工具应继承此类"""
-    
+    __tool_schema: Dict[str, Any] = {}
     @property
     def schema(self) -> Dict[str, Any]:
         """返回工具的schema定义"""
@@ -18,6 +18,21 @@ class Tool(ABC):
 
 class Message(ABC):
     """消息基类，所有消息类型应继承此类"""
+    __message_schema: Dict[str, Any] = {}
+    
+    def __init__(self, source: str = "system") -> None:
+        """
+        初始化消息对象
+        :param source: 消息来源，默认为"system"
+        """
+        self.source = source
+        
+    def set_source(self, source: str) -> None:
+        """
+        设置消息来源
+        :param source: 消息来源
+        """
+        self.source = source
     
     @property
     def schema(self) -> Dict[str, Any]:
@@ -26,24 +41,9 @@ class Message(ABC):
             return self.__message_schema
         raise NotImplementedError("Message schema not defined")
 
-class Model(ABC):
-    """模型基类，所有模型应继承此类"""
-    
-    @property
-    def schema(self) -> Dict[str, Any]:
-        """返回模型的schema定义"""
-        if hasattr(self, "__model_schema"):
-            return self.__model_schema
-        raise NotImplementedError("Model schema not defined")
-    
-    @abstractmethod
-    def call(self, *args, **kwargs):
-        """调用模型的方法，必须由子类实现"""
-        raise NotImplementedError("Model call method not implemented")
-
 class SDK(ABC):
     """SDK基类，所有SDK应继承此类"""
-    
+    __sdk_schema: Dict[str, Any] = {}
     @property
     def schema(self) -> Dict[str, Any]:
         """返回SDK的schema定义"""
@@ -51,9 +51,10 @@ class SDK(ABC):
             return self.__sdk_schema
         raise NotImplementedError("SDK schema not defined")
 
+
 class Service(ABC):
     """服务基类，所有服务应继承此类"""
-    
+    __service_schema: Dict[str, Any] = {}
     @property
     def schema(self) -> Dict[str, Any]:
         """返回服务的schema定义"""
@@ -66,9 +67,10 @@ class Service(ABC):
         """调用服务的方法，必须由子类实现"""
         raise NotImplementedError("Service call method not implemented")
 
+
 class Agent(ABC):
     """Agent基类，所有Agent应继承此类"""
-    
+    __agent_schema: Dict[str, Any] = {}
     @property
     def schema(self) -> Dict[str, Any]:
         """返回Agent的schema定义"""

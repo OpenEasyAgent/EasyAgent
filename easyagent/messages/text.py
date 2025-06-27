@@ -1,5 +1,4 @@
-from easyagent.core import Message
-from typing import Optional, List, Dict, Any
+from easyagent.core.base import Message
 
 class TextMessage(Message):
     """
@@ -23,15 +22,8 @@ class TextMessage(Message):
         :param text: 文本内容
         :param source: 消息来源
         """
-        super().__init__()
+        super().__init__(source=source)
         self.text = text
-        self.source = source
-
-    def __str__(self) -> str:
-        return self.text
-
-    def __repr__(self) -> str:
-        return f"<TextMessage: {self.text}, source: {self.source}>"
 
     def __add__(self, other: "TextMessage") -> "TextMessage":
         """
@@ -83,7 +75,7 @@ class TextMessage(Message):
         """
         return item in self.text
     
-    def __eq__(self, other: "TextMessage") -> bool:
+    def __eq__(self, other: object) -> bool:
         """
         重载等于运算符
         :param other: 另一个文本消息对象
@@ -92,9 +84,11 @@ class TextMessage(Message):
         判断两个文本消息的内容和来源是否相等
         如果内容和来源都相等，则返回True，否则返回False
         """
+        if not isinstance(other, TextMessage):
+            return NotImplemented
         return self.text == other.text and self.source == other.source
 
-    def __ne__(self, other: "TextMessage") -> bool:
+    def __ne__(self, other: object) -> bool:
         """
         重载不等于运算符
         :param other: 另一个文本消息对象
@@ -104,3 +98,17 @@ class TextMessage(Message):
         如果内容和来源都不相等，则返回True，否则返回False
         """
         return not self.__eq__(other)
+    
+    def __str__(self) -> str:
+        """
+        返回文本消息的字符串表示
+        :return: 文本内容
+        """
+        return self.text
+    
+    def __repr__(self) -> str:
+        """
+        返回文本消息的详细字符串表示
+        :return: 文本消息对象的字符串表示
+        """
+        return f"<TextMessage: {self.text}, source: {self.source}>"

@@ -5,15 +5,6 @@
   
 ## 方案：
 ### Core元素
----
-
-**Model**
-- 模型，支持使用api-key、base-url进行创建。
-- Model是一个基类，会继承实现OpenAILLM，QwenLLM等。
-
-```python
-model = OpenAILLM(base_url="xxx", api_key="xxx")
-```
 
 ---
 
@@ -59,10 +50,9 @@ memory_manager = MemoryManager(...) #参数没想好，到时候再说吧。
 ---
 
 **Agent**
-- AI Agent的核心，调用model，并帮助model行动，来增强model的能力，解决问题。
+- AI Agent的核心，输入Message，输出Message。
 - Agent是一个基类，会继承实现ChatAgent，SearchAgent等。
 ```python
-model = OpenAILLM(base_url="xxx", api_key="xxx")
 sdk1 = ChatSDK()
 sdk2 = SDK(SearchEngine(engine="google"))
 agent1 = ChatAgent(model=model, sdk=sdk1)
@@ -105,10 +95,6 @@ class GetPaint(Tool):
     def call(self, query: str) -> ImageMessage:
         return model(query)
 
-
-paint_model = StableDiffusion(...)  # 参数到时候再说
-language_model = OpenAILLM(base_url="xxx", api_key="xxx", 
-                           temperature=0.7, max_token=1024)
 
 paint_tool = GetPaint(model=paint_model)
 sdk = ChatSDK()
