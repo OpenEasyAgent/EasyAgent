@@ -40,7 +40,26 @@ EasyAgent 由以下核心组件构成:
 - 想了解更多，请阅读[结构文档](./docs/ARCHITECTURE.md)
 
 ## 🚀 快速开始
-- Attention: 示例代码中的有些功能目前还未实现，这仅仅是一个愿景
+
+### 安装
+
+```bash
+pip install easy-agent
+```
+
+### 开发环境安装
+
+```bash
+pip install -e ".[dev]"
+```
+
+### 运行测试
+
+```bash
+pytest
+```
+
+### 快速开始示例
 
 ```python
 from easyagent.models import OpenAILLM

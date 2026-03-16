@@ -1,5 +1,7 @@
 from easyagent.core.base import Message
 
+import requests
+from io import BytesIO
 
 class ImageMessage(Message):
     """
@@ -65,6 +67,20 @@ class ImageMessage(Message):
         :return: 是否不相等
         """
         return not self.__eq__(other)
+    
+    def save(self, path: str) -> None:
+        """
+        保存图像消息到指定路径
+        :param path: 保存路径
+        :return: None
+        """
+        from PIL import Image
+        if self.img_url.startswith("http"):
+            response = requests.get(self.img_url)
+            img = Image.open(BytesIO(response.content))
+        else:
+            img = Image.open(self.img_url)
+        img.save(path)
 
     
     

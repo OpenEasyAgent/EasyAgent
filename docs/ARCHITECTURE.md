@@ -50,9 +50,10 @@ memory_manager = MemoryManager(...) #参数没想好，到时候再说吧。
 ---
 
 **Agent**
-- AI Agent的核心，输入Message，输出Message。
+- AI Agent的核心，。
 - Agent是一个基类，会继承实现ChatAgent，SearchAgent等。
 ```python
+model = OpenAILLM(base_url="xxx", api_key="xxx")
 sdk1 = ChatSDK()
 sdk2 = SDK(SearchEngine(engine="google"))
 agent1 = ChatAgent(model=model, sdk=sdk1)
@@ -63,9 +64,8 @@ agent2 = SearchAgent(model=model, sdk=sdk2)
 ---
 ### 构想的示例
 ```python
-from easyagent.models import OpenAILLM, StableDiffusion
 from easyagent.messages import TextMessage, ImageMessage
-from easyagent.agents import ChatAgent
+from easyagent.agents import ChatAgent, StableDiffusion, OpenAILLM
 from easyagent.sdks import ChatSDK
 from easyagent.core import Tool
 
@@ -96,6 +96,10 @@ class GetPaint(Tool):
         return model(query)
 
 
+paint_model = StableDiffusion(...)  # 参数到时候再说
+language_model = OpenAILLM(base_url="xxx", api_key="xxx", 
+                           temperature=0.7, max_token=1024)
+
 paint_tool = GetPaint(model=paint_model)
 sdk = ChatSDK()
 sdk.append(paint_tool)
@@ -117,18 +121,10 @@ easyagent/
 │ 
 ├── core/                     # 核心功能和基类
 │   ├── __init__.py           # 导出所有核心类
-│   └── base.py               # 所有抽象基类的实现 (Model, Message, Tool, SDK, Service, Agent)
-│  
-├── models/                   # 模型实现
-│   ├── __init__.py           # 导出所有模型类
-│   ├── base.py               # 模型实现的共享代码
-│   ├── openai.py             # OpenAI接口标准模型实现
-│   ├── qwen.py               # Qwen接口标准模型实现
-│   └── ollama.py             # Ollama接口标准模型实现
+│   └── base.py               # 所有抽象基类的实现 (Message, Tool, SDK, Service, Agent)
 │  
 ├── messages/                  # 消息类型实现
 │   ├── __init__.py            # 导出所有消息类
-│   ├── base.py                # 消息类型的共享代码
 │   ├── text.py                # 文本消息实现
 │   └── image.py               # 图像消息实现
 │  
@@ -140,19 +136,16 @@ easyagent/
 │  
 ├── sdks/                      # SDK实现
 │   ├── __init__.py            # 导出所有SDK类
-│   ├── base.py                # SDK的共享代码
 │   ├── chat.py                # 聊天SDK实现
 │   └── math.py                # 数学SDK实现
 │  
 ├── services/                  # 服务实现
 │   ├── __init__.py            # 导出所有服务类
-│   ├── base.py                # 服务的共享代码
 │   ├── context.py             # 上下文管理器实现
 │   └── memory.py              # 记忆管理器实现
 │  
 ├── agents/                    # Agent实现
 │   ├── __init__.py            # 导出所有Agent类
-│   ├── base.py                # Agent的共享代码
 │   ├── chat_agent.py          # 聊天Agent实现
 │   └── search_agent.py        # 搜索Agent实现
 │  

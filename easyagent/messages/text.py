@@ -1,5 +1,7 @@
 from easyagent.core.base import Message
 
+from typing import Literal
+
 class TextMessage(Message):
     """
     文本消息类
